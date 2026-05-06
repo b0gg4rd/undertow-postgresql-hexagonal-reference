@@ -1,0 +1,5 @@
+databaseChangeLog:
+  # DDL
+  - include:
+      file: db.changelog-ddl-payee-alias-directory-entry.sql
+      relativeToChangelogFile: true

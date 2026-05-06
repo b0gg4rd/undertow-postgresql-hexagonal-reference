@@ -1,0 +1,95 @@
+openapi: 3.0.3
+info:
+  title: @project.description@
+  version: @project.version@
+tags:
+  - name: Payee Alias Directory Entries
+paths:
+  /payee-alias-directory-entries:
+    post:
+      tags:
+        - Payee Alias Directory Entries
+      operationId: create-payee-alias-directory-entry
+      summary: Create a Payee Alias Directory Entry.
+      requestBody:
+        $ref: '#/components/schemas/CreatePayeeAliasDirectoryEntryRequest'
+      responses:
+        '201':
+          description: Payee Alias Directory Entry created.
+          headers:
+            a0:
+              description: Payee Alias Directory Entry Reference
+              schema:
+                type: string
+        '400':
+          description: Bad request.
+        '404':
+          description: Not found.
+  /payee-alias-directory-entries/{a0}:
+    get:
+      tags:
+        - Payee Alias Directory Entries
+      operationId: retrieve-payee-alias-directory-entry
+      summary: Retrieve a Payee Alias Directory Entry.
+      parameters:
+        - name: a0
+          description: Payee Alias Directory Entry Reference
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payee Alias Directory Entry retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayeeAliasDirectoryEntry'
+        '400':
+          description: Bad request.
+        '404':
+          description: Not found.
+    delete:
+      tags:
+        - Payee Alias Directory Entries
+      operationId: delete-payee-alias-directory-entry
+      summary: Delete a Payee Alias Directory Entry.
+      parameters:
+        - name: a0
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Payee Alias Directory Entry deleted.
+        '400':
+          description: Bad request.
+        '404':
+          description: Not found.
+components:
+  schemas:
+    CreatePayeeAliasDirectoryEntryRequest:
+      type: object
+      properties:
+        a1:
+          type: string
+          description: Customer Reference.
+        a2:
+          type: string
+          description: Alias.
+    PayeeAliasDirectoryEntry:
+      type: object
+      properties:
+        a0:
+          type: string
+          description: Payee Alias Directory Entry Reference.
+        a1:
+          type: string
+          description: Customer Reference.
+        a2:
+          type: string
+          description: Alias.
+        a3:
+          type: string
+          description: Status.

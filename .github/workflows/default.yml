@@ -1,0 +1,54 @@
+name: default workflow
+run-name: ${{github.actor}} is executing default workflow
+on:
+  - push
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+      - run:
+          ./mvnw -Djansi.force=true -ntp -P local -U clean verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  push:
+    needs: build
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+      - run:
+          ./mvnw -Djansi.force=true -ntp -P dev -U clean package docker:build -Ddocker.push.username=${{github.actor}} -Ddocker.push.password=${{secrets.GITHUB_TOKEN}} docker:push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  run:
+    needs: push
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: undertow-hexagonal-reference
+      - run: |
+          gcloud run deploy undertow-hexagonal-reference \
+            --project undertow-hexagonal-reference \
+            --image us-central1-docker.pkg.dev/undertow-hexagonal-reference/ghcr/b0gg4rd/undertow-hexagonal-reference:1.0.0-SNAPSHOT \
+            --platform managed \
+            --region us-central1 \
+            --allow-unauthenticated \
+            --port 8080
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
