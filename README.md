@@ -16,8 +16,8 @@ Reference project for **Hexagonal** architecture implementing the functionality 
 flowchart LR
   subgraph Infrastructure ["Infrastructure (Adapters)"]
     direction TB
-    A_IN[Inbound Adapters\nCreatePayeeAliasDirectoryEntryHandler\nRetrievePayeeAliasDirectoryEntryHandler\nDeletePayeeAliasDirectoryEntryHandler]
-    A_OUT[Outbound Adapters\nPostgresqlPayeeAliasDirectoryEntryPersistenceAdapter\nSlf4jLoggingAdapter\nJsoniterJsonTransformationAdapter]
+    A_IN[Adapter In\nCreatePayeeAliasDirectoryEntryHandler\nRetrievePayeeAliasDirectoryEntryHandler\nDeletePayeeAliasDirectoryEntryHandler]
+    A_OUT[Adapter Out\nPostgresqlPayeeAliasDirectoryEntryPersistenceAdapter\nSlf4jLoggingAdapter\nJsoniterJsonTransformationAdapter]
     FW[[Frameworks / Libraries]]
   end
 

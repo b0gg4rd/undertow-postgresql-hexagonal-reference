@@ -384,6 +384,7 @@
                           <arg>--defaults-file=/liquibase/changelog/liquibase.properties</arg>
                           <arg>update</arg>
                         </cmd>
+                        <log
                       </run>
                     </image>
                   </images>
