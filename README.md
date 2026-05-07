@@ -66,7 +66,8 @@ docker run \
   -w $(pwd) \
   -v $(pwd):$(pwd) \
   -v ${HOME}/.m2:/root/.m2 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
   azul/zulu-openjdk-alpine:25.0.1 \
-  ./mvnw -Djansi.force=true -ntp -U clean install
+  ./mvnw -Djansi.force=true -ntp -P local -U clean verify
 ```
 
